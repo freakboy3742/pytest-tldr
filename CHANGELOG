@@ -1,0 +1,20 @@
+=============
+Release notes
+=============
+
+0.1.2
+-----
+
+* (#4) Fixed support for Python 2.7
+* (#2) Ensure tldr works when xdist isn't installed
+
+0.1.1
+-----
+
+* Ensure tldr doesn't overwrite the `Cricket
+  <http://github.com/pybee.cricket>`_ terminal reporter.
+
+0.1.0
+-----
+
+Initial release.
