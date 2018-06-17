@@ -14,6 +14,10 @@ pytest-tldr
     :target: https://github.com/pybee/briefcase/blob/master/LICENSE
     :alt: License
 
+.. image:: https://beekeeper.herokuapp.com/projects/pybee/pytest-tldr/shield
+    :target: https://beekeeper.herokuapp.com/projects/pybee/pytest-tldr
+    :alt: Build status
+
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
 need to see.
