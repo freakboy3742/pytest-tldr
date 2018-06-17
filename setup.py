@@ -25,6 +25,8 @@ setup(
     py_modules=['pytest_tldr'],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     install_requires=['pytest>=3.5.0'],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
