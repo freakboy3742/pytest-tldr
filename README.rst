@@ -56,25 +56,25 @@ Then you can just run your test suite as normal::
     $ pytest tests
     EF..s..........ux
     ======================================================================
-    ERROR: tests/test_size.py::TestTests::test_error
+    ERROR: tests/test_things.py::TestTests::test_error
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "/Users/rkm/projects/sample/tests/test_size.py", line 182, in test_error
+      File "/Users/rkm/projects/sample/tests/test_things.py", line 182, in test_error
         raise Exception("this is really bad")
     Exception: this is really bad
 
     ======================================================================
-    FAIL: tests/test_size.py::TestTests::test_failed
+    FAIL: tests/test_things.py::TestTests::test_failed
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "/Users/rkm/projects/sample/tests/test_size.py", line 179, in test_failed
+      File "/Users/rkm/projects/sample/tests/test_things.py", line 179, in test_failed
         self.fail('failed!')
       File "/Users/rkm/.pyenv/versions/3.6.2/lib/python3.6/unittest/case.py", line 670, in fail
         raise self.failureException(msg)
     AssertionError: failed!
 
     ======================================================================
-    UNEXPECTED SUCCESS: tests/test_size.py::TestTests::test_upassed
+    UNEXPECTED SUCCESS: tests/test_things.py::TestTests::test_upassed
 
     ----------------------------------------------------------------------
     Ran 17 tests in 2.11s
@@ -93,44 +93,44 @@ Or, if you need a little more detail, use the verbosity option::
     cachedir: .pytest_cache
 
     ----------------------------------------------------------------------
-    tests/test_size.py::TestTests::test_error ... ERROR
-    tests/test_size.py::TestTests::test_failed ... FAIL
-    tests/test_size.py::TestTests::test_output ... ok
-    tests/test_size.py::TestTests::test_passed ... ok
-    tests/test_size.py::TestTests::test_skipped ... Skipped: tra-la-la
-    tests/test_size.py::TestTests::test_thing_0 ... ok
-    tests/test_size.py::TestTests::test_thing_1 ... ok
-    tests/test_size.py::TestTests::test_thing_2 ... ok
-    tests/test_size.py::TestTests::test_thing_3 ... ok
-    tests/test_size.py::TestTests::test_thing_4 ... ok
-    tests/test_size.py::TestTests::test_thing_5 ... ok
-    tests/test_size.py::TestTests::test_thing_6 ... ok
-    tests/test_size.py::TestTests::test_thing_7 ... ok
-    tests/test_size.py::TestTests::test_thing_8 ... ok
-    tests/test_size.py::TestTests::test_thing_9 ... ok
-    tests/test_size.py::TestTests::test_upassed ... unexpected success
-    tests/test_size.py::TestTests::test_xfailed ... expected failure
+    tests/test_things.py::TestTests::test_error ... ERROR
+    tests/test_things.py::TestTests::test_failed ... FAIL
+    tests/test_things.py::TestTests::test_output ... ok
+    tests/test_things.py::TestTests::test_passed ... ok
+    tests/test_things.py::TestTests::test_skipped ... Skipped: tra-la-la
+    tests/test_things.py::TestTests::test_thing_0 ... ok
+    tests/test_things.py::TestTests::test_thing_1 ... ok
+    tests/test_things.py::TestTests::test_thing_2 ... ok
+    tests/test_things.py::TestTests::test_thing_3 ... ok
+    tests/test_things.py::TestTests::test_thing_4 ... ok
+    tests/test_things.py::TestTests::test_thing_5 ... ok
+    tests/test_things.py::TestTests::test_thing_6 ... ok
+    tests/test_things.py::TestTests::test_thing_7 ... ok
+    tests/test_things.py::TestTests::test_thing_8 ... ok
+    tests/test_things.py::TestTests::test_thing_9 ... ok
+    tests/test_things.py::TestTests::test_upassed ... unexpected success
+    tests/test_things.py::TestTests::test_xfailed ... expected failure
 
     ======================================================================
-    ERROR: tests/test_size.py::TestTests::test_error
+    ERROR: tests/test_things.py::TestTests::test_error
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "/Users/rkm/projects/sample/tests/test_size.py", line 182, in test_error
+      File "/Users/rkm/projects/sample/tests/test_things.py", line 182, in test_error
         raise Exception("this is really bad")
     Exception: this is really bad
 
     ======================================================================
-    FAIL: tests/test_size.py::TestTests::test_failed
+    FAIL: tests/test_things.py::TestTests::test_failed
     ----------------------------------------------------------------------
     Traceback (most recent call last):
-      File "/Users/rkm/projects/sample/tests/test_size.py", line 179, in test_failed
+      File "/Users/rkm/projects/sample/tests/test_things.py", line 179, in test_failed
         self.fail('failed!')
       File "/Users/rkm/.pyenv/versions/3.6.2/lib/python3.6/unittest/case.py", line 670, in fail
         raise self.failureException(msg)
     AssertionError: failed!
 
     ======================================================================
-    UNEXPECTED SUCCESS: tests/test_size.py::TestTests::test_upassed
+    UNEXPECTED SUCCESS: tests/test_things.py::TestTests::test_upassed
 
     ----------------------------------------------------------------------
     Ran 17 tests in 2.07s
