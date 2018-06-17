@@ -10,14 +10,15 @@ import pytest
 
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config):
-    # Unregister the default terminal reporter.
-    config.pluginmanager.unregister(name="terminalreporter")
+    if getattr(config.option, 'cricket_mode', 'off') == 'off':
+        # Unregister the default terminal reporter.
+        config.pluginmanager.unregister(name="terminalreporter")
 
-    reporter = TerseReporter(config, sys.stdout)
-    config.pluginmanager.register(reporter, "terminalreporter")
+        reporter = TerseReporter(config, sys.stdout)
+        config.pluginmanager.register(reporter, "terminalreporter")
 
-    # Force the traceback style to native.
-    config.option.tbstyle = 'native'
+        # Force the traceback style to native.
+        config.option.tbstyle = 'native'
 
 
 def _plugin_nameversions(plugininfo):
