@@ -10,9 +10,9 @@ pytest-tldr
     :target: https://pypi.org/project/pytest-tldr
     :alt: Python versions
 
-.. image:: https://travis-ci.org/freakboy3742/pytest-tldr.svg?branch=master
-    :target: https://travis-ci.org/freakboy3742/pytest-tldr
-    :alt: See Build Status on Travis CI
+.. image:: https://img.shields.io/pypi/l/briefcase.svg
+    :target: https://github.com/pybee/briefcase/blob/master/LICENSE
+    :alt: License
 
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
