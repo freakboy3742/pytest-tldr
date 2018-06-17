@@ -14,7 +14,7 @@ def pytest_configure(config):
         # Unregister the default terminal reporter.
         config.pluginmanager.unregister(name="terminalreporter")
 
-        reporter = TerseReporter(config, sys.stdout)
+        reporter = TLDRReporter(config, sys.stdout)
         config.pluginmanager.register(reporter, "terminalreporter")
 
         # Force the traceback style to native.
@@ -36,7 +36,7 @@ def _plugin_nameversions(plugininfo):
     return values
 
 
-class TerseReporter:
+class TLDRReporter:
     def __init__(self, config, file=None):
         self.config = config
         self.file = file if file is not None else sys.stdout
