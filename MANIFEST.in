@@ -1,3 +1,4 @@
+include beekeeper.yml
 include LICENSE
 include README.rst
 recursive-include tests *.py
