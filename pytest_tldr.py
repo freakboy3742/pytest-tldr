@@ -118,6 +118,48 @@ class TerseReporter:
             else:
                 self.print("{} ... ".format(nodeid), end='')
 
+    def report_pass(self, report):
+        self.stats.setdefault('.', []).append(report)
+        if self.verbosity:
+            self.print("ok")
+        else:
+            self.print('.', end='', flush=True)
+
+    def report_fail(self, report):
+        self.stats.setdefault('F', []).append(report)
+        if self.verbosity:
+            self.print("FAIL")
+        else:
+            self.print('F', end='', flush=True)
+
+    def report_error(self, report):
+        self.stats.setdefault('E', []).append(report)
+        if self.verbosity:
+            self.print("ERROR")
+        else:
+            self.print('E', end='', flush=True)
+
+    def report_skip(self, report):
+        self.stats.setdefault('s', []).append(report)
+        if self.verbosity:
+            self.print(report.longrepr[2])
+        else:
+            self.print('s', end='', flush=True)
+
+    def report_expected_failure(self, report):
+        self.stats.setdefault('x', []).append(report)
+        if self.verbosity:
+            self.print('expected failure')
+        else:
+            self.print('x', end='', flush=True)
+
+    def report_unexpected_success(self, report):
+        self.stats.setdefault('u', []).append(report)
+        if self.verbosity:
+            self.print("unexpected success")
+        else:
+            self.print('u', end='', flush=True)
+
     def pytest_runtest_logreport(self, report):
         if report.when == 'call':
             if self.verbosity and self.xdist:
@@ -127,67 +169,33 @@ class TerseReporter:
             if report.failed:
                 if report.longrepr == 'Unexpected success':
                     # pytest raw xfail
-                    self.stats.setdefault('u', []).append(report)
-                    if self.verbosity:
-                        self.print("unexpected success")
-                    else:
-                        self.print('u', end='', flush=True)
+                    self.report_unexpected_success(report)
                 else:
                     if '\nAssertionError: ' in str(report.longrepr) \
                             or '\nFailed: ' in str(report.longrepr):
                         # pytest assertion
                         # unittest self.assert()
-                        self.stats.setdefault('F', []).append(report)
-                        if self.verbosity:
-                            self.print("FAIL")
-                        else:
-                            self.print('F', end='', flush=True)
+                        self.report_fail(report)
                     elif str(report.longrepr).startswith('[XPASS('):
                         # pytest xfail(strict=True)
-                        self.stats.setdefault('u', []).append(report)
-                        if self.verbosity:
-                            self.print("unexpected success")
-                        else:
-                            self.print('u', end='', flush=True)
+                        self.report_unexpected_success(report)
                     else:
-                        self.stats.setdefault('E', []).append(report)
-                        if self.verbosity:
-                            self.print("ERROR")
-                        else:
-                            self.print('E', end='', flush=True)
+                        self.report_error(report)
             elif report.skipped:
                 if isinstance(report.longrepr, tuple):
-                    self.stats.setdefault('s', []).append(report)
-                    if self.verbosity:
-                        self.print(report.longrepr[2])
-                    else:
-                        self.print('s', end='', flush=True)
+                    self.report_skip(report)
                 else:
-                    self.stats.setdefault('x', []).append(report)
-                    if self.verbosity:
-                        self.print('expected failure')
-                    else:
-                        self.print('x', end='', flush=True)
+                    self.report_expected_failure(report)
             else:
-                self.stats.setdefault('.', []).append(report)
-                if self.verbosity:
-                    self.print("ok")
-                else:
-                    self.print('.', end='', flush=True)
+                self.report_pass(report)
         else:
             if report.failed:
-                self.stats.setdefault('E', []).append(report)
-                if self.verbosity:
-                    self.print("ERROR")
-                else:
-                    self.print('E', end='', flush=True)
+                self.report_error(report)
             elif report.skipped:
                 if isinstance(report.longrepr, tuple):
-                    self.stats.setdefault('s', []).append(report)
-                    if self.verbosity:
-                        self.print(report.longrepr[2])
-                    else:
-                        self.print('s', end='', flush=True)
+                    self.report_skip(report)
+                else:
+                    self.report_expected_failure(report)
 
     def pytest_sessionfinish(self, exitstatus):
         self.print()
