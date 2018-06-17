@@ -44,7 +44,7 @@ class TLDRReporter:
         self.file = file if file is not None else sys.stdout
 
         self.verbosity = self.config.option.verbose
-        self.xdist = self.config.option.numprocesses is not None
+        self.xdist = getattr(self.config.option, 'numprocesses', None) is not None
 
         self.stats = {}
 
