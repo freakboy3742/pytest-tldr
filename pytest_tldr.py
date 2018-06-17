@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 import platform
 import sys
 import time
@@ -53,7 +55,14 @@ class TLDRReporter:
         self._tw = _pytest.config.create_terminal_writer(config, file)
 
     def print(self, *args, **kwargs):
-        print(*args, **kwargs, file=self.file)
+        if sys.version_info.major == 2:
+            # Python 2.7 doesn't accept the flush kwarg.
+            flush = kwargs.pop('flush', False)
+            print(*args, file=self.file, **kwargs)
+            if flush:
+                self.file.flush()
+        else:
+            print(*args, file=self.file, **kwargs)
 
     def pytest_internalerror(self, excrepr):
         for line in str(excrepr).split("\n"):
@@ -117,7 +126,7 @@ class TLDRReporter:
                 if self.verbosity >= 2:
                     self.print("{} ... ".format(nodeid))
             else:
-                self.print("{} ... ".format(nodeid), end='')
+                self.print("{} ... ".format(nodeid), end='', flush=True)
 
     def report_pass(self, report):
         self.stats.setdefault('.', []).append(report)
@@ -170,6 +179,7 @@ class TLDRReporter:
             if report.failed:
                 if report.longrepr == 'Unexpected success':
                     # pytest raw xfail
+                    # unittest @unexpectedSuccess, Python 3
                     self.report_unexpected_success(report)
                 else:
                     if '\nAssertionError: ' in str(report.longrepr) \
@@ -188,7 +198,11 @@ class TLDRReporter:
                 else:
                     self.report_expected_failure(report)
             else:
-                self.report_pass(report)
+                if report.longrepr == 'Unexpected success':
+                    # unittest @unexpectedSuccess, Py2.7
+                    self.report_unexpected_success(report)
+                else:
+                    self.report_pass(report)
         else:
             if report.failed:
                 self.report_error(report)
@@ -244,14 +258,10 @@ class TLDRReporter:
             ))
         self.print()
 
-
-
-        problems = []
-
-
         xfails = self.stats.get('x', [])
         skips = self.stats.get('s', [])
 
+        problems = []
         if errors:
             problems.append('errors={}'.format(len(errors)))
         if failures:
@@ -261,7 +271,7 @@ class TLDRReporter:
         if xfails:
             problems.append('expected failures={}'.format(len(xfails)))
         if upasses:
-            problems.append('unexpected successes={}'.format(len(xfails)))
+            problems.append('unexpected successes={}'.format(len(upasses)))
 
         if failures or errors or upasses:
             self.print("FAILED (" + ", ".join(problems) + ")")
