@@ -14,8 +14,8 @@ pytest-tldr
     :target: https://github.com/pybee/briefcase/blob/master/LICENSE
     :alt: License
 
-.. image:: https://beekeeper.herokuapp.com/projects/pybee/pytest-tldr/shield
-    :target: https://beekeeper.herokuapp.com/projects/pybee/pytest-tldr
+.. image:: https://beekeeper.herokuapp.com/projects/freakboy3742/pytest-tldr/shield
+    :target: https://beekeeper.herokuapp.com/projects/freakboy3742/pytest-tldr
     :alt: Build status
 
 
