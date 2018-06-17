@@ -40,9 +40,10 @@ class TLDRReporter:
     def __init__(self, config, file=None):
         self.config = config
         self.file = file if file is not None else sys.stdout
-
-        self.verbosity = self.config.option.verbose
-        self.xdist = self.config.option.numprocesses is not None
+        
+        option = self.config.option
+        self.verbosity = option.verbose
+        self.xdist = hasattr(option, 'numprocesses') and option.numprocesses is not None
 
         self.stats = {}
 
