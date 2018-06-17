@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-tldr',
-    version='0.1.0',
+    version='0.1.1',
     author='Russell Keith-Magee',
     author_email='russell@keith-magee.com',
     maintainer='Russell Keith-Magee',
