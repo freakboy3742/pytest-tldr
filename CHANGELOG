@@ -2,6 +2,12 @@
 Release notes
 =============
 
+0.1.3
+-----
+
+* (#5) Improved reporting when the test suite contains an error and cannot be
+  imported.
+
 0.1.2
 -----
 

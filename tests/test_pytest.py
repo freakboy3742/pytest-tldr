@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 
 def test_pass(testdir):
     testdir.makepyfile("""

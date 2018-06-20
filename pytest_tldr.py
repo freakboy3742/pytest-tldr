@@ -69,6 +69,13 @@ class TLDRReporter:
             self.print("INTERNALERROR> " + line)
         return 1
 
+    def pytest_collectreport(self, report):
+        if report.failed:
+            self.print("======================================================================")
+            self.print("CRITICAL: {}".format(report.nodeid))
+            self.print("----------------------------------------------------------------------")
+            self.print(report.longrepr)
+
     def pytest_sessionstart(self, session):
         self._starttime = time.time()
         self._n_tests = 0
@@ -256,7 +263,6 @@ class TLDRReporter:
                 n_tests=self._n_tests,
                 duration=duration,
             ))
-        self.print()
 
         xfails = self.stats.get('x', [])
         skips = self.stats.get('s', [])
@@ -273,9 +279,11 @@ class TLDRReporter:
         if upasses:
             problems.append('unexpected successes={}'.format(len(upasses)))
 
-        if failures or errors or upasses:
-            self.print("FAILED (" + ", ".join(problems) + ")")
-        elif skips or xfails:
-            self.print("OK (" + ", ".join(problems) + ")")
-        else:
-            self.print("OK")
+        if self._n_tests:
+            self.print()
+            if failures or errors or upasses:
+                self.print("FAILED (" + ", ".join(problems) + ")")
+            elif skips or xfails:
+                self.print("OK (" + ", ".join(problems) + ")")
+            else:
+                self.print("OK")
