@@ -2,6 +2,14 @@
 Release notes
 =============
 
+0.1.4
+-----
+
+* (#6) Restored compatibility with pytest plugins that produce summary output
+  (e.g., coverage reports from pytest-cov).
+* Increased the verbosity needed to see stdout for passed tests.
+* Included stdout for Unexpected Success results.
+
 0.1.3
 -----
 
