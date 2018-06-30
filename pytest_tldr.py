@@ -266,6 +266,9 @@ class TLDRReporter:
         for report in upasses:
             self.print("======================================================================")
             self.print("UNEXPECTED SUCCESS: {}".format(report.nodeid))
+            if report.capstdout:
+                self.print(report.capstdout)
+            self.print(report.longrepr)
             self.print()
 
         self.print("----------------------------------------------------------------------")
