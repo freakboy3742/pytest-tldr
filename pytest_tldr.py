@@ -253,7 +253,7 @@ class TLDRReporter:
             self.print(report.longrepr)
             self.print()
 
-        if self.verbosity >= 2:
+        if self.verbosity >= 3:
             for report in self.stats.get('.', []):
                 if report.capstdout:
                     self.print("======================================================================")
