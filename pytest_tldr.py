@@ -253,7 +253,7 @@ class TLDRReporter:
             self.print(report.longrepr)
             self.print()
 
-        if self.verbosity >= 2:
+        if self.verbosity >= 3:
             for report in self.stats.get('.', []):
                 if report.capstdout:
                     self.print("======================================================================")
@@ -266,6 +266,9 @@ class TLDRReporter:
         for report in upasses:
             self.print("======================================================================")
             self.print("UNEXPECTED SUCCESS: {}".format(report.nodeid))
+            if report.capstdout:
+                self.print(report.capstdout)
+            self.print(report.longrepr)
             self.print()
 
         self.print("----------------------------------------------------------------------")
