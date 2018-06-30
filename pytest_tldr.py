@@ -8,6 +8,10 @@ import time
 import pluggy
 import py
 import pytest
+from _pytest.main import (
+    EXIT_OK,
+    EXIT_TESTSFAILED,
+)
 
 
 @pytest.hookimpl(trylast=True)
@@ -48,11 +52,17 @@ class TLDRReporter:
 
         self.stats = {}
 
-        # This is needed for compatibility; some other plugins
+        # These are needed for compatibility; some plugins
         # rely on the fact that there is a terminalreporter
-        # plugin that has a _tw attribute.
+        # that has specific attributes.
         import _pytest.config
         self._tw = _pytest.config.create_terminal_writer(config, file)
+        self.reportchars = None
+
+    def write(self, content, **markup):
+        """A method that exists for compatibility with the default terminalreporter"""
+        # Ignore all markup, just print the content.
+        self.print(content)
 
     def print(self, *args, **kwargs):
         if sys.version_info.major == 2:
@@ -263,6 +273,11 @@ class TLDRReporter:
                 n_tests=self._n_tests,
                 duration=duration,
             ))
+
+        if exitstatus in {EXIT_OK, EXIT_TESTSFAILED}:
+            self.config.hook.pytest_terminal_summary(
+                terminalreporter=self, exitstatus=exitstatus
+            )
 
         xfails = self.stats.get('x', [])
         skips = self.stats.get('s', [])

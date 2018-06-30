@@ -7,7 +7,7 @@ def test_pass(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_pass ... ok'
+        'test_pass.py::test_pass ... ok'
     ])
 
     assert result.ret == 0
@@ -21,7 +21,7 @@ def test_fail(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_fail ... FAIL',
+        'test_fail.py::test_fail ... FAIL',
         'FAIL: test_fail.py::test_fail'
     ])
 
@@ -36,7 +36,7 @@ def test_error(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_error ... ERROR',
+        'test_error.py::test_error ... ERROR',
         'ERROR: test_error.py::test_error'
     ])
 
@@ -54,7 +54,7 @@ def test_skip(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_skip ... Skipped: this should be skipped',
+        'test_skip.py::test_skip ... Skipped: this should be skipped',
     ])
 
     assert result.ret == 0
@@ -71,7 +71,7 @@ def test_xfail(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_expected_failure ... expected failure',
+        'test_xfail.py::test_expected_failure ... expected failure',
     ])
 
     assert result.ret == 0
@@ -88,7 +88,7 @@ def test_upass(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_unexpected_success ... ok',
+        'test_upass.py::test_unexpected_success ... ok',
     ])
 
     assert result.ret == 0
@@ -105,7 +105,7 @@ def test_upass_strict(testdir):
 
     result = testdir.runpytest('-v')
     result.stdout.fnmatch_lines([
-        '*::test_unexpected_success ... unexpected success',
+        'test_upass_strict.py::test_unexpected_success ... unexpected success',
     ])
 
     assert result.ret == 1
