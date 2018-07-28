@@ -59,10 +59,40 @@ class TLDRReporter:
         self._tw = _pytest.config.create_terminal_writer(config, file)
         self.reportchars = None
 
+    ######################################################################
+    # Plugin compatibility methods.
+    #
+    # TLDR overwrites TerminalReporter, but some plugins depend
+    # on the outout capabilities of TerminalReporter. Preserve them,
+    # to the extent possible.
+    ######################################################################
+
     def write(self, content, **markup):
-        """A method that exists for compatibility with the default terminalreporter"""
-        # Ignore all markup, just print the content.
         self.print(content)
+
+    def write_sep(self, sep, title=None, **markup):
+        self.print(sep * 80)
+        self.print(title)
+        self.print(sep * 80)
+
+    def ensure_newline(self):
+        print()
+
+    def write_line(self, line, **markup):
+        self.ensure_newline()
+        self.print(line)
+
+    def rewrite(self, line, **markup):
+        self.print('\r' + ' '*80 + '\r')
+        self.print(line)
+
+    def section(self, title, sep="=", **kw):
+        self.write_sep(sep, title, **kw)
+
+    def line(self, msg, **kw):
+        self._tw.line(msg, **kw)
+
+    ######################################################################
 
     def print(self, *args, **kwargs):
         if sys.version_info.major == 2:
@@ -81,9 +111,9 @@ class TLDRReporter:
 
     def pytest_collectreport(self, report):
         if report.failed:
-            self.print("======================================================================")
+            self.print("=" * 78)
             self.print("CRITICAL: {}".format(report.nodeid))
-            self.print("----------------------------------------------------------------------")
+            self.print("-" * 78)
             self.print(report.longrepr)
 
     def pytest_sessionstart(self, session):
@@ -129,7 +159,7 @@ class TLDRReporter:
         if not self._started:
             if self.verbosity:
                 self.print()
-                self.print("----------------------------------------------------------------------")
+                self.print("-" * 78)
             self._started = True
 
         # If we're running in distributed mode, we can't
@@ -235,9 +265,9 @@ class TLDRReporter:
 
         errors = self.stats.get('E', [])
         for report in errors:
-            self.print("======================================================================")
+            self.print("=" * 78)
             self.print("ERROR: {}".format(report.nodeid))
-            self.print("----------------------------------------------------------------------")
+            self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
             self.print(report.longrepr)
@@ -245,9 +275,9 @@ class TLDRReporter:
 
         failures = self.stats.get('F', [])
         for report in failures:
-            self.print("======================================================================")
+            self.print("=" * 78)
             self.print("FAIL: {}".format(report.nodeid))
-            self.print("----------------------------------------------------------------------")
+            self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
             self.print(report.longrepr)
@@ -256,22 +286,22 @@ class TLDRReporter:
         if self.verbosity >= 3:
             for report in self.stats.get('.', []):
                 if report.capstdout:
-                    self.print("======================================================================")
+                    self.print("=" * 78)
                     self.print("Pass: {}".format(report.nodeid))
-                    self.print("----------------------------------------------------------------------")
+                    self.print("-" * 78)
                     self.print(report.capstdout)
                     self.print()
 
         upasses = self.stats.get('u', [])
         for report in upasses:
-            self.print("======================================================================")
+            self.print("=" * 78)
             self.print("UNEXPECTED SUCCESS: {}".format(report.nodeid))
             if report.capstdout:
                 self.print(report.capstdout)
             self.print(report.longrepr)
             self.print()
 
-        self.print("----------------------------------------------------------------------")
+        self.print("-" * 78)
         self.print("Ran {n_tests} tests in {duration:.2f}s".format(
                 n_tests=self._n_tests,
                 duration=duration,
