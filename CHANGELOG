@@ -2,6 +2,12 @@
 Release notes
 =============
 
+0.1.5
+-----
+
+* (#9) Restored compatibility with more pytest plugins that have output
+  (e.g., pytest-json)
+
 0.1.4
 -----
 
