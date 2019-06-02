@@ -72,3 +72,6 @@ target/
 # pyenv
 .python-version
 
+# CI output
+test-cov.xml
+test-output.xml
