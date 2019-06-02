@@ -14,6 +14,9 @@ from _pytest.main import (
 )
 
 
+__version__ = '0.1.5'
+
+
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config):
     if getattr(config.option, 'cricket_mode', 'off') == 'off':
