@@ -14,10 +14,9 @@ pytest-tldr
     :target: https://github.com/pybee/briefcase/blob/master/LICENSE
     :alt: License
 
-.. image:: https://beekeeper.herokuapp.com/projects/freakboy3742/pytest-tldr/shield
-    :target: https://beekeeper.herokuapp.com/projects/freakboy3742/pytest-tldr
-    :alt: Build status
-
+.. image:: [![Build Status](https://dev.azure.com/beeware-project/pytest-tldr/_apis/build/status/freakboy3742.pytest-tldr?branchName=master)](https://dev.azure.com/beeware-project/pytest-tldr/_build/latest?definitionId=1&branchName=master)
+   :target: https://dev.azure.com/beeware-project/pytest-tldr/_build?definitionId=1
+   :alt: CI Status
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
 need to see.
