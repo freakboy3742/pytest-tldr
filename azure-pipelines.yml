@@ -31,7 +31,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest
+    pip install pytest pytest-coverage
     # pytest-azurepipelines 0.6.0 modifies the nodeid on tests.
     # See https://github.com/tonybaloney/pytest-azurepipelines/issues/20 for details
     # In the meantime, use a patched version.
