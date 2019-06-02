@@ -10,8 +10,8 @@ pytest-tldr
     :target: https://pypi.org/project/pytest-tldr
     :alt: Python versions
 
-.. image:: https://img.shields.io/pypi/l/briefcase.svg
-    :target: https://github.com/pybee/briefcase/blob/master/LICENSE
+.. image:: https://img.shields.io/pypi/l/pytest-tldr.svg
+    :target: https://github.com/freakboy3742/pytest-tldr/blob/master/LICENSE
     :alt: License
 
 .. image:: https://dev.azure.com/beeware-project/pytest-tldr/_apis/build/status/freakboy3742.pytest-tldr?branchName=master

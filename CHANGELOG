@@ -32,7 +32,7 @@ Release notes
 -----
 
 * Ensure tldr doesn't overwrite the `Cricket
-  <http://github.com/pybee.cricket>`_ terminal reporter.
+  <http://github.com/beeware/cricket>`_ terminal reporter.
 
 0.1.0
 -----
