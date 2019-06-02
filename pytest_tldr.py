@@ -309,7 +309,9 @@ class TLDRReporter:
 
         if exitstatus in {EXIT_OK, EXIT_TESTSFAILED}:
             self.config.hook.pytest_terminal_summary(
-                terminalreporter=self, exitstatus=exitstatus
+                config=self.config,
+                terminalreporter=self,
+                exitstatus=exitstatus,
             )
 
         xfails = self.stats.get('x', [])
