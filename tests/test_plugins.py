@@ -8,7 +8,7 @@ def test_coverage(testdir):
     result = testdir.runpytest('-v', '--cov=.')
     result.stdout.fnmatch_lines([
         'test_coverage.py::test_coverage ... ok',
-        '---------- coverage: platform *',
+        '*----- coverage: platform *-----',
         'Name               Stmts   Miss  Cover',
         '--------------------------------------',
         'test_coverage.py       2      0   100%',
