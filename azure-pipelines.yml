@@ -32,10 +32,6 @@ steps:
 
 - script: |
     pip install pytest
-    # pytest-azurepipelines 0.6.0 modifies the nodeid on tests.
-    # See https://github.com/tonybaloney/pytest-azurepipelines/issues/20 for details
-    # In the meantime, use a patched version.
-    # pip install pytest-azurepipelines
-    pip install git+https://github.com/freakboy3742/pytest-azurepipelines.git@default-nodeid
+    pip install pytest-azurepipelines
     python setup.py test
   displayName: 'pytest'
