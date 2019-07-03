@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import platform
 import sys
 import time
@@ -115,12 +116,10 @@ class TLDRReporter:
         if sys.version_info.major == 2:
             # Python 2.7 doesn't accept the flush kwarg.
             flush = kwargs.pop('flush', False)
-            # print(text, file=self.file, **kwargs)
             self._tw.write(text)
             if flush:
                 self.file.flush()
         else:
-            # print(text, file=self.file, **kwargs)
             self._tw.write(text)
         self._tw.write(end)
 
