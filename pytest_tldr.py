@@ -8,10 +8,19 @@ import time
 import pluggy
 import py
 import pytest
-from _pytest.main import (
-    EXIT_OK,
-    EXIT_TESTSFAILED,
-)
+try:
+    from _pytest.main import ExitCode
+except ImportError:
+    # PyTest <5 compatibibility
+    import enum
+    from _pytest.main import (
+        EXIT_OK,
+        EXIT_TESTSFAILED,
+    )
+
+    class ExitCode(enum.IntEnum):
+        OK = EXIT_OK
+        TESTS_FAILED = EXIT_TESTSFAILED
 
 
 __version__ = '0.1.6'
@@ -310,7 +319,7 @@ class TLDRReporter:
                 duration=duration,
             ))
 
-        if exitstatus in {EXIT_OK, EXIT_TESTSFAILED}:
+        if exitstatus in {ExitCode.OK, ExitCode.TESTS_FAILED}:
             self.config.hook.pytest_terminal_summary(
                 config=self.config,
                 terminalreporter=self,
