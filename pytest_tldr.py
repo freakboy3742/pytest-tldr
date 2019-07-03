@@ -12,13 +12,12 @@ try:
     from _pytest.main import ExitCode
 except ImportError:
     # PyTest <5 compatibibility
-    import enum
     from _pytest.main import (
         EXIT_OK,
         EXIT_TESTSFAILED,
     )
 
-    class ExitCode(enum.IntEnum):
+    class ExitCode:
         OK = EXIT_OK
         TESTS_FAILED = EXIT_TESTSFAILED
 
