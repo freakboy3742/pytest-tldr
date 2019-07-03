@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-
 import platform
 import sys
 import time
@@ -8,10 +7,18 @@ import time
 import pluggy
 import py
 import pytest
-from _pytest.main import (
-    EXIT_OK,
-    EXIT_TESTSFAILED,
-)
+try:
+    from _pytest.main import ExitCode
+except ImportError:
+    # PyTest <5 compatibibility
+    from _pytest.main import (
+        EXIT_OK,
+        EXIT_TESTSFAILED,
+    )
+
+    class ExitCode:
+        OK = EXIT_OK
+        TESTS_FAILED = EXIT_TESTSFAILED
 
 
 __version__ = '0.1.6'
@@ -71,45 +78,54 @@ class TLDRReporter:
     ######################################################################
 
     def write(self, content, **markup):
-        self.print(content)
+        self._tw.write(content)
 
     def write_sep(self, sep, title=None, **markup):
-        self.print(sep * 80)
-        self.print(title)
-        self.print(sep * 80)
+        self.ensure_newline()
+        self._tw.sep(sep, title, **markup)
 
     def ensure_newline(self):
-        print()
+        self._tw.line()
 
     def write_line(self, line, **markup):
+        if not isinstance(line, str):
+            line = str(line, errors="replace")
         self.ensure_newline()
-        self.print(line)
+        self._tw.line(line, **markup)
 
     def rewrite(self, line, **markup):
-        self.print('\r' + ' '*80 + '\r')
-        self.print(line)
+        erase = markup.pop("erase", False)
+        if erase:
+            fill_count = self._tw.fullwidth - len(line) - 1
+            fill = " " * fill_count
+        else:
+            fill = ""
+        line = str(line)
+        self._tw.write("\r" + line + fill, **markup)
 
     def section(self, title, sep="=", **kw):
-        self.write_sep(sep, title, **kw)
+        self._tw.sep(sep, title, **kw)
 
     def line(self, msg, **kw):
         self._tw.line(msg, **kw)
 
     ######################################################################
 
-    def print(self, *args, **kwargs):
+    def print(self, text='', **kwargs):
+        end = kwargs.pop('end', '\n')
         if sys.version_info.major == 2:
             # Python 2.7 doesn't accept the flush kwarg.
             flush = kwargs.pop('flush', False)
-            print(*args, file=self.file, **kwargs)
+            self._tw.write(text)
             if flush:
                 self.file.flush()
         else:
-            print(*args, file=self.file, **kwargs)
+            self._tw.write(text)
+        self._tw.write(end)
 
     def pytest_internalerror(self, excrepr):
         for line in str(excrepr).split("\n"):
-            self.print("INTERNALERROR> " + line)
+            self.write_line("INTERNALERROR> " + line)
         return 1
 
     def pytest_collectreport(self, report):
@@ -310,7 +326,7 @@ class TLDRReporter:
                 duration=duration,
             ))
 
-        if exitstatus in {EXIT_OK, EXIT_TESTSFAILED}:
+        if exitstatus in {ExitCode.OK, ExitCode.TESTS_FAILED}:
             self.config.hook.pytest_terminal_summary(
                 config=self.config,
                 terminalreporter=self,

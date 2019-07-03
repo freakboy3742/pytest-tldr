@@ -69,8 +69,13 @@ target/
 # IPython Notebook
 .ipynb_checkpoints
 
+# VSCode
+.vscode
+
 # pyenv
 .python-version
+pytest*-venv
+venv
 
 # CI output
 test-cov.xml

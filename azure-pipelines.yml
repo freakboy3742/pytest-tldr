@@ -12,12 +12,19 @@ strategy:
   matrix:
     Python27:
       python.version: '2.7'
+      pytest.version: '<5'
     Python35:
       python.version: '3.5'
+      pytest.version: '>=5.0.0'
     Python36:
       python.version: '3.6'
+      pytest.version: '>=5.0.0'
     Python37:
       python.version: '3.7'
+      pytest.version: '>=5.0.0'
+    Pytest-4:
+      python.version: '3.7'
+      pytest.version: '<5'
 
 steps:
 - task: UsePythonVersion@0
@@ -26,12 +33,12 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
+    pip install "pytest$(pytest.version)"
     python -m pip install --upgrade pip setuptools
     pip install -e .
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest
     pip install pytest-azurepipelines
     python setup.py test
   displayName: 'pytest'
