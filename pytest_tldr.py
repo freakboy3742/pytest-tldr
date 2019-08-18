@@ -59,6 +59,7 @@ class TLDRReporter:
 
         self.verbosity = self.config.option.verbose
         self.xdist = getattr(self.config.option, 'numprocesses', None) is not None
+        self.hasmarkup = False
 
         self.stats = {}
 
