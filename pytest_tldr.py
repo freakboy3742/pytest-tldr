@@ -8,7 +8,7 @@ import pluggy
 import py
 import pytest
 try:
-    from _pytest.main import ExitCode
+    from pytest import ExitCode
 except ImportError:
     # PyTest <5 compatibibility
     from _pytest.main import (
