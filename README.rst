@@ -14,8 +14,8 @@ pytest-tldr
     :target: https://github.com/freakboy3742/pytest-tldr/blob/master/LICENSE
     :alt: License
 
-.. image:: https://dev.azure.com/beeware-project/pytest-tldr/_apis/build/status/freakboy3742.pytest-tldr?branchName=master
-   :target: https://dev.azure.com/beeware-project/pytest-tldr/_build/latest?definitionId=1&branchName=master
+.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffreakboy3742%2Fpytest-tldr%2Fbadge
+   :target: https://actions-badge.atrox.dev/freakboy3742/pytest-tldr/goto
    :alt: CI Status
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
