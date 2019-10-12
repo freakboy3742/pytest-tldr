@@ -14,9 +14,10 @@ pytest-tldr
     :target: https://github.com/freakboy3742/pytest-tldr/blob/master/LICENSE
     :alt: License
 
-.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ffreakboy3742%2Fpytest-tldr%2Fbadge
-   :target: https://actions-badge.atrox.dev/freakboy3742/pytest-tldr/goto
-   :alt: CI Status
+.. image:: https://github.com/freakboy3742/pytest-tldr/workflows/Build%20status/badge.svg
+   :target: https://github.com/freakboy3742/pytest-tldr/actions
+   :alt: Build Status
+
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
 need to see.
