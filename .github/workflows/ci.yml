@@ -38,7 +38,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: 3.5
+        python-version: [3.5]
         pytest-version: ['<4', '<5', '>=5.0.0']
     steps:
     - uses: actions/checkout@v1
