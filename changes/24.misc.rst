@@ -1,0 +1,1 @@
+Updated CI configuration to do pre-build checks.
