@@ -1,6 +1,9 @@
-include beekeeper.yml
+include CHANGELOG.rst
 include LICENSE
 include README.rst
+include tox.ini
+include pyproject.toml
+recursive-include changes *.rst
 recursive-include tests *.py
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
