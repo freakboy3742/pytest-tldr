@@ -14,10 +14,9 @@ pytest-tldr
     :target: https://github.com/freakboy3742/pytest-tldr/blob/master/LICENSE
     :alt: License
 
-.. image:: https://github.com/freakboy3742/pytest-tldr/workflows/Build%20status/badge.svg
+.. image:: https://github.com/freakboy3742/pytest-tldr/workflows/CI/badge.svg?branch=master
    :target: https://github.com/freakboy3742/pytest-tldr/actions
    :alt: Build Status
-
 
 A `pytest`_ plugin that limits the output of pytest to just the things you
 need to see.
