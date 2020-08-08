@@ -134,7 +134,7 @@ class TLDRReporter:
             self.print("=" * 78)
             self.print("CRITICAL: {}".format(report.nodeid))
             self.print("-" * 78)
-            self.print(report.longrepr)
+            self.print(report.longreprtext)
 
     def pytest_sessionstart(self, session):
         self._starttime = time.time()
@@ -219,6 +219,7 @@ class TLDRReporter:
     def report_skip(self, report):
         self.stats.setdefault('s', []).append(report)
         if self.verbosity:
+            # breakpoint()
             self.print(report.longrepr[2])
         else:
             self.print('s', end='', flush=True)
@@ -244,28 +245,29 @@ class TLDRReporter:
 
             self._n_tests += 1
             if report.failed:
-                if report.longrepr == 'Unexpected success':
+                if report.longreprtext == 'Unexpected success':
                     # pytest raw xfail
                     # unittest @unexpectedSuccess, Python 3
                     self.report_unexpected_success(report)
                 else:
-                    if '\nAssertionError: ' in str(report.longrepr) \
-                            or '\nFailed: ' in str(report.longrepr):
+                    if '\nAssertionError: ' in str(report.longreprtext) \
+                            or '\nFailed: ' in str(report.longreprtext):
                         # pytest assertion
                         # unittest self.assert()
                         self.report_fail(report)
-                    elif str(report.longrepr).startswith('[XPASS('):
+                    elif str(report.longreprtext).startswith('[XPASS('):
                         # pytest xfail(strict=True)
                         self.report_unexpected_success(report)
                     else:
                         self.report_error(report)
             elif report.skipped:
+                # breakpoint()
                 if isinstance(report.longrepr, tuple):
                     self.report_skip(report)
                 else:
                     self.report_expected_failure(report)
             else:
-                if report.longrepr == 'Unexpected success':
+                if report.longreprtext == 'Unexpected success':
                     # unittest @unexpectedSuccess, Py2.7
                     self.report_unexpected_success(report)
                 else:
@@ -274,6 +276,7 @@ class TLDRReporter:
             if report.failed:
                 self.report_error(report)
             elif report.skipped:
+                # breakpoint()
                 if isinstance(report.longrepr, tuple):
                     self.report_skip(report)
                 else:
@@ -290,7 +293,7 @@ class TLDRReporter:
             self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
-            self.print(report.longrepr)
+            self.print(report.longreprtext)
             self.print()
 
         failures = self.stats.get('F', [])
@@ -300,7 +303,7 @@ class TLDRReporter:
             self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
-            self.print(report.longrepr)
+            self.print(report.longreprtext)
             self.print()
 
         if self.verbosity >= 3:
@@ -318,7 +321,7 @@ class TLDRReporter:
             self.print("UNEXPECTED SUCCESS: {}".format(report.nodeid))
             if report.capstdout:
                 self.print(report.capstdout)
-            self.print(report.longrepr)
+            self.print(report.longreprtext)
             self.print()
 
         self.print("-" * 78)
