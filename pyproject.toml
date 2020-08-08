@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.towncrier]
 directory = "changes"
-package = "pytest-tldr"
+package = "pytest_tldr"
 filename = "CHANGELOG.rst"
 title_format = "{version} ({project_date})"
 issue_format = "`#{issue} <https://github.com/freakboy3742/pytest-tldr/issues/{issue}>`_"
