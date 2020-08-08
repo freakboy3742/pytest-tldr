@@ -219,7 +219,6 @@ class TLDRReporter:
     def report_skip(self, report):
         self.stats.setdefault('s', []).append(report)
         if self.verbosity:
-            # breakpoint()
             self.print(report.longrepr[2])
         else:
             self.print('s', end='', flush=True)
@@ -261,7 +260,6 @@ class TLDRReporter:
                     else:
                         self.report_error(report)
             elif report.skipped:
-                # breakpoint()
                 if isinstance(report.longrepr, tuple):
                     self.report_skip(report)
                 else:
@@ -276,7 +274,6 @@ class TLDRReporter:
             if report.failed:
                 self.report_error(report)
             elif report.skipped:
-                # breakpoint()
                 if isinstance(report.longrepr, tuple):
                     self.report_skip(report)
                 else:
