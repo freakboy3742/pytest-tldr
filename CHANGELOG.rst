@@ -4,6 +4,30 @@ Release notes
 
 .. towncrier release notes start
 
+0.2.2 (2020-08-08)
+------------------
+
+Bugfixes
+^^^^^^^^
+
+* Added Pytest 6 support. (#26)
+
+0.2.1 (2019-08-18)
+------------------
+
+Bugfixes
+^^^^^^^^
+
+* Added a flag to identify TerminalReporter.
+
+0.2.0 (2019-07-03)
+------------------
+
+Bugfixes
+^^^^^^^^
+
+* Added Pytest 5 compatibility
+
 0.1.5
 -----
 

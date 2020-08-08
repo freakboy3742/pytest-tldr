@@ -1,1 +1,0 @@
-Corrected a problem with output of skipped tests exposed by pytest 6.
