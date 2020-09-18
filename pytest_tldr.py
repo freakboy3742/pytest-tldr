@@ -21,7 +21,7 @@ except ImportError:
         TESTS_FAILED = EXIT_TESTSFAILED
 
 
-__version__ = '0.2.2'
+__version__ = '0.2.3b'
 
 
 @pytest.hookimpl(trylast=True)
@@ -35,6 +35,7 @@ def pytest_configure(config):
 
         # Force the traceback style to native.
         config.option.tbstyle = 'native'
+    
 
 
 def _plugin_nameversions(plugininfo):
@@ -60,6 +61,7 @@ class TLDRReporter:
         self.verbosity = self.config.option.verbose
         self.xdist = getattr(self.config.option, 'numprocesses', None) is not None
         self.hasmarkup = False
+        self.run_quiet_report_verbose = getattr(self.config.option, 'run_quiet_report_verbose', None)
 
         self.stats = {}
 
@@ -141,6 +143,27 @@ class TLDRReporter:
         self._n_tests = 0
         self._started = False
 
+        if self.verbosity and not self.run_quiet_report_verbose:
+            verinfo = platform.python_version()
+            msg = "platform {} -- Python {}".format(sys.platform, verinfo)
+            if hasattr(sys, "pypy_version_info"):
+                verinfo = ".".join(map(str, sys.pypy_version_info[:3]))
+                msg += "[pypy-{}-{}]".format(verinfo, sys.pypy_version_info[3])
+            self.print(msg)
+            self.print("pytest=={}".format(pytest.__version__))
+            self.print("py=={}".format(py.__version__))
+            self.print("pluggy=={}".format(pluggy.__version__))
+
+            headers = self.config.hook.pytest_report_header(
+                config=self.config, startdir=py.path.local()
+            )
+            for header in headers:
+                if isinstance(header, str):
+                    self.print(header)
+                else:
+                    for line in header:
+                        self.print(line)
+
     def pytest_report_header(self, config):
         lines = [
             "rootdir: {}".format(config.rootdir),
@@ -156,34 +179,71 @@ class TLDRReporter:
 
     def pytest_runtest_logstart(self, nodeid, location):
         if not self._started:
+            if self.verbosity and not self.run_quiet_report_verbose:
+                self.print()
+                self.print("-" * 78)
             self._started = True
+
+        # If we're running in distributed mode, we can't
+        # print a hanging statement *before* the test,
+        # because other processes may return before this
+        # one. So; only output a "before" line if we're
+        # in singlethreaded mode; or, if we're in
+        # hyper-verbose mode (in which case, output with a newline)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            if self.xdist:
+                if self.verbosity >= 2:
+                    self.print("{} ... ".format(nodeid))
+            else:
+                self.print("{} ... ".format(nodeid), end='', flush=True)
 
     def report_pass(self, report):
         self.stats.setdefault('.', []).append(report)
-        self.print('.', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print("ok")
+        else:
+            self.print('.', end='', flush=True)
 
     def report_fail(self, report):
         self.stats.setdefault('F', []).append(report)
-        self.print('F', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print("FAIL")
+        else:
+            self.print('F', end='', flush=True)
 
     def report_error(self, report):
         self.stats.setdefault('E', []).append(report)
-        self.print('E', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print("ERROR")
+        else:
+            self.print('E', end='', flush=True)
 
     def report_skip(self, report):
         self.stats.setdefault('s', []).append(report)
-        self.print('s', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print(report.longrepr[2])
+        else:
+            self.print('s', end='', flush=True)
 
     def report_expected_failure(self, report):
         self.stats.setdefault('x', []).append(report)
-        self.print('x', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print('expected failure')
+        else:
+            self.print('x', end='', flush=True)
 
     def report_unexpected_success(self, report):
         self.stats.setdefault('u', []).append(report)
-        self.print('u', end='', flush=True)
+        if self.verbosity and not self.run_quiet_report_verbose:
+            self.print("unexpected success")
+        else:
+            self.print('u', end='', flush=True)
 
     def pytest_runtest_logreport(self, report):
         if report.when == 'call':
+            if self.verbosity and self.xdist and not self.run_quiet_report_verbose:
+                self.print("{}: ".format(report.nodeid), end='')
+
             self._n_tests += 1
             if report.failed:
                 if report.longreprtext == 'Unexpected success':
@@ -244,6 +304,15 @@ class TLDRReporter:
                 self.print(report.capstdout)
             self.print(report.longreprtext)
             self.print()
+
+        if self.verbosity >= 3 and not self.run_quiet_report_verbose:
+            for report in self.stats.get('.', []):
+                if report.capstdout:
+                    self.print("=" * 78)
+                    self.print("Pass: {}".format(report.nodeid))
+                    self.print("-" * 78)
+                    self.print(report.capstdout)
+                    self.print()
 
         upasses = self.stats.get('u', [])
         for report in upasses:
