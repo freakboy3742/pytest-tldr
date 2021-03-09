@@ -1,2 +1,0 @@
-Corrected output stream flush handling. This prevented long-running test results
-from being displayed until the end of the test suite.

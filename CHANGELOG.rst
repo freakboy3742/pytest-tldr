@@ -4,6 +4,15 @@ Release notes
 
 .. towncrier release notes start
 
+0.2.3 (2021-03-10)
+------------------
+Bugfixes
+^^^^^^^^
+
+* Corrected output stream flush handling. This prevented long-running test results
+  from being displayed until the end of the test suite. (`#28 <https://github.com/freakboy3742/pytest-tldr/issues/28>`_)
+
+
 0.2.2 (2020-08-08)
 ------------------
 
