@@ -114,15 +114,9 @@ class TLDRReporter:
 
     def print(self, text='', **kwargs):
         end = kwargs.pop('end', '\n')
-        if sys.version_info.major == 2:
-            # Python 2.7 doesn't accept the flush kwarg.
-            flush = kwargs.pop('flush', False)
-            self._tw.write(text)
-            if flush:
-                self.file.flush()
-        else:
-            self._tw.write(text)
-        self._tw.write(end)
+        flush = kwargs.pop('flush', False)
+        self._tw.write(text, flush=flush)
+        self._tw.write(end, flush=flush)
 
     def pytest_internalerror(self, excrepr):
         for line in str(excrepr).split("\n"):
