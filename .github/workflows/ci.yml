@@ -53,7 +53,7 @@ jobs:
         python -m pip install tox
     - name: Test
       run: |
-        tox -e py${{ matrix.python-version }}-${{ matrix.pytest-version }}
+        tox -e py${{ matrix.python-version }}-pytest${{ matrix.pytest-version }}
 
   build:
     needs: smoke
@@ -76,4 +76,4 @@ jobs:
         python -m pip install tox
     - name: Test
       run: |
-        tox -e py${{ matrix.python-version }}-${{ matrix.pytest-version }}
+        tox -e py${{ matrix.python-version }}-pytest${{ matrix.pytest-version }}
