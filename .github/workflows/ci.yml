@@ -42,7 +42,7 @@ jobs:
         pytest-version: ['3', '4', '5', '6']
         include:
           - tox-python-version: 'py36'
-            python-version: [3.6]
+            python-version: 3.6
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
