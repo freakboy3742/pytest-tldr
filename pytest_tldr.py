@@ -114,9 +114,18 @@ class TLDRReporter:
 
     def print(self, text='', **kwargs):
         end = kwargs.pop('end', '\n')
-        flush = kwargs.pop('flush', False)
-        self._tw.write(text, flush=flush)
-        self._tw.write(end, flush=flush)
+
+        self._tw.write(text)
+        self._tw.write(end)
+        try:
+            if kwargs.pop('flush', False):
+                self._tw.flush()
+        except AttributeError:
+            # pytest 6 introduced a separate flush argument to
+            # TerminalWriter.write(), and a standalone TerminalWriter.flush()
+            # method. This argument/method didn't exist on pytest 5 and lower;
+            # the flush was made implicitly on every write.
+            pass
 
     def pytest_internalerror(self, excrepr):
         for line in str(excrepr).split("\n"):
