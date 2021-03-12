@@ -1,1 +1,0 @@
-Restored compatibility with pytest < 6.

@@ -4,8 +4,18 @@ Release notes
 
 .. towncrier release notes start
 
+0.2.4 (2021-03-12)
+------------------
+
+Bugfixes
+^^^^^^^^
+
+* Restored compatibility with pytest < 6. (`#32 <https://github.com/freakboy3742/pytest-tldr/issues/32>`_)
+
+
 0.2.3 (2021-03-10)
 ------------------
+
 Bugfixes
 ^^^^^^^^
 
