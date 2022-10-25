@@ -38,36 +38,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tox-python-version: ['py37', 'py38', 'py39', 'py310', 'py311'] #, 'py312']
-        pytest-version: ['3', '4', '5', '6', '7']
-        include:
-          - tox-python-version: 'py37'
-            python-version: "3.7"
-          - tox-python-version: 'py38'
-            python-version: "3.8"
-          - tox-python-version: 'py39'
-            python-version: "3.9"
-          - tox-python-version: 'py310'
-            python-version: "3.10"
-          - tox-python-version: 'py311'
-            python-version: "3.11"
-          # - tox-python-version: 'py312'
-          #   python-version: "3.12.0-alpha - 3.12.0"
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        pytest-version: ["3", "4", "5", "6", "7"]
 
         exclude:
-          - tox-python-version: py310
-          - pytest-version: 3
-          - tox-python-version: py310
-          - pytest-version: 4
-          - tox-python-version: py310
-          - pytest-version: 5
+          # PyTest <=5 doesn't work on Python >= 3.10
+          - python-version: "3.10"
+            pytest-version: "3"
+          - python-version: "3.10"
+            pytest-version: "4"
+          - python-version: "3.10"
+            pytest-version: "5"
 
-          - tox-python-version: py311
-          - pytest-version: 3
-          - tox-python-version: py311
-          - pytest-version: 4
-          - tox-python-version: py311
-          - pytest-version: 5
+          - python-version: "3.11"
+            pytest-version: "3"
+          - python-version: "3.11"
+            pytest-version: "4"
+          - python-version: "3.11"
+            pytest-version: "5"
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
@@ -81,4 +69,5 @@ jobs:
         python -m pip install tox
     - name: Test
       run: |
-        tox -e ${{ matrix.tox-python-version }}-pytest${{ matrix.pytest-version }}
+        export PY_VERSION=${{ matrix.python-version }}
+        tox -e py${PY_VERSION/./}-pytest${{ matrix.pytest-version }}
