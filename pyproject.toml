@@ -10,6 +10,4 @@ directory = "changes"
 package = "pytest_tldr"
 filename = "CHANGELOG.rst"
 title_format = "{version} ({project_date})"
-issue_format = "`#{issue} <https://github.com/freakboy3742/pytest-tldr/issues/{issue}>`_"
 template = "changes/template.rst"
-underlines = ["-", "^", "\""]
