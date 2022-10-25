@@ -5,6 +5,28 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.flake8]
+# https://flake8.readthedocs.org/en/latest/
+exclude=[
+    "build/*",
+    "dist/*",
+    "local/*",
+    ".tox/*",
+    "venv/*",
+]
+max-complexity = 10
+max-line-length = 119
+ignore = ["E121","E123","E126","E226","E24","E704","W503","W504","C901"]
+
+[tool.isort]
+profile = "black"
+skip_glob = [
+    "docs/conf.py",
+    "venv*",
+    "local",
+]
+multi_line_output = 3
+
 [tool.towncrier]
 directory = "changes"
 package = "pytest_tldr"
