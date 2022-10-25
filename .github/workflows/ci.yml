@@ -32,47 +32,27 @@ jobs:
       run: |
         tox -e ${{ matrix.task }}
 
-  smoke:
+  build:
     needs: beefore
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        tox-python-version: ['py36']
-        pytest-version: ['3', '4', '5', '6']
-        include:
-          - tox-python-version: 'py36'
-            python-version: 3.6
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools
-        python -m pip install tox
-    - name: Test
-      run: |
-        tox -e ${{ matrix.tox-python-version }}-pytest${{ matrix.pytest-version }}
-
-  build:
-    needs: smoke
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        tox-python-version: ['py37', 'py38', 'py39']
-        pytest-version: ['3', '4', '5', '6']
+        tox-python-version: ['py37', 'py38', 'py39', 'py310', 'py311', 'py312']
+        pytest-version: ['3', '4', '5', '6', '7']
         include:
           - tox-python-version: 'py37'
-            python-version: 3.7
+            python-version: "3.7"
           - tox-python-version: 'py38'
-            python-version: 3.8
+            python-version: "3.8"
           - tox-python-version: 'py39'
-            python-version: 3.9
+            python-version: "3.9"
+          - tox-python-version: 'py310'
+            python-version: "3.10"
+          - tox-python-version: 'py311'
+            python-version: "3.11"
+          - tox-python-version: 'py312'
+            python-version: "3.12.0-alpha - 3.12.0"
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
