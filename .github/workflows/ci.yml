@@ -53,6 +53,21 @@ jobs:
             python-version: "3.11"
           # - tox-python-version: 'py312'
           #   python-version: "3.12.0-alpha - 3.12.0"
+
+        exclude:
+          - tox-python-version: py310
+          - pytest-version: 3
+          - tox-python-version: py310
+          - pytest-version: 4
+          - tox-python-version: py310
+          - pytest-version: 5
+
+          - tox-python-version: py311
+          - pytest-version: 3
+          - tox-python-version: py311
+          - pytest-version: 4
+          - tox-python-version: py311
+          - pytest-version: 5
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python-version }}
