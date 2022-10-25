@@ -152,7 +152,12 @@ class TLDRReporter:
                 msg += "[pypy-{}-{}]".format(verinfo, sys.pypy_version_info[3])
             self.print(msg)
             self.print("pytest=={}".format(pytest.__version__))
-            self.print("py=={}".format(py.__version__))
+            try:
+                # Pytest 7.2 vendored `py`; if it's vendored, the version
+                # won't exist, but we also don't care that it doesn't exist.
+                self.print("py=={}".format(py.__version__))
+            except AttributeError:
+                pass
             self.print("pluggy=={}".format(pluggy.__version__))
 
             headers = self.config.hook.pytest_report_header(
