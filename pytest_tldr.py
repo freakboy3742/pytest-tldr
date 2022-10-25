@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
 import platform
 import sys
 import time
@@ -7,26 +5,24 @@ import time
 import pluggy
 import py
 import pytest
+
 try:
     from pytest import ExitCode
 except ImportError:
     # PyTest <5 compatibibility
-    from _pytest.main import (
-        EXIT_OK,
-        EXIT_TESTSFAILED,
-    )
+    from _pytest.main import EXIT_OK, EXIT_TESTSFAILED
 
     class ExitCode:
         OK = EXIT_OK
         TESTS_FAILED = EXIT_TESTSFAILED
 
 
-__version__ = '0.2.4'
+__version__ = "0.2.4"
 
 
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config):
-    if getattr(config.option, 'cricket_mode', 'off') == 'off':
+    if getattr(config.option, "cricket_mode", "off") == "off":
         # Unregister the default terminal reporter.
         config.pluginmanager.unregister(name="terminalreporter")
 
@@ -34,7 +30,7 @@ def pytest_configure(config):
         config.pluginmanager.register(reporter, "terminalreporter")
 
         # Force the traceback style to native.
-        config.option.tbstyle = 'native'
+        config.option.tbstyle = "native"
 
 
 def _plugin_nameversions(plugininfo):
@@ -58,7 +54,7 @@ class TLDRReporter:
         self.file = file if file is not None else sys.stdout
 
         self.verbosity = self.config.option.verbose
-        self.xdist = getattr(self.config.option, 'numprocesses', None) is not None
+        self.xdist = getattr(self.config.option, "numprocesses", None) is not None
         self.hasmarkup = False
 
         self.stats = {}
@@ -67,6 +63,7 @@ class TLDRReporter:
         # rely on the fact that there is a terminalreporter
         # that has specific attributes.
         import _pytest.config
+
         self._tw = _pytest.config.create_terminal_writer(config, file)
         self.reportchars = None
 
@@ -112,13 +109,13 @@ class TLDRReporter:
 
     ######################################################################
 
-    def print(self, text='', **kwargs):
-        end = kwargs.pop('end', '\n')
+    def print(self, text="", **kwargs):
+        end = kwargs.pop("end", "\n")
 
         self._tw.write(text)
         self._tw.write(end)
         try:
-            if kwargs.pop('flush', False):
+            if kwargs.pop("flush", False):
                 self._tw.flush()
         except AttributeError:
             # pytest 6 introduced a separate flush argument to
@@ -135,7 +132,7 @@ class TLDRReporter:
     def pytest_collectreport(self, report):
         if report.failed:
             self.print("=" * 78)
-            self.print("CRITICAL: {}".format(report.nodeid))
+            self.print(f"CRITICAL: {report.nodeid}")
             self.print("-" * 78)
             self.print(report.longreprtext)
 
@@ -146,19 +143,19 @@ class TLDRReporter:
 
         if self.verbosity:
             verinfo = platform.python_version()
-            msg = "platform {} -- Python {}".format(sys.platform, verinfo)
+            msg = f"platform {sys.platform} -- Python {verinfo}"
             if hasattr(sys, "pypy_version_info"):
                 verinfo = ".".join(map(str, sys.pypy_version_info[:3]))
-                msg += "[pypy-{}-{}]".format(verinfo, sys.pypy_version_info[3])
+                msg += f"[pypy-{verinfo}-{sys.pypy_version_info[3]}]"
             self.print(msg)
-            self.print("pytest=={}".format(pytest.__version__))
+            self.print(f"pytest=={pytest.__version__}")
             try:
                 # Pytest 7.2 vendored `py`; if it's vendored, the version
                 # won't exist, but we also don't care that it doesn't exist.
-                self.print("py=={}".format(py.__version__))
+                self.print(f"py=={py.__version__}")
             except AttributeError:
                 pass
-            self.print("pluggy=={}".format(pluggy.__version__))
+            self.print(f"pluggy=={pluggy.__version__}")
 
             headers = self.config.hook.pytest_report_header(
                 config=self.config, startdir=py.path.local()
@@ -172,14 +169,16 @@ class TLDRReporter:
 
     def pytest_report_header(self, config):
         lines = [
-            "rootdir: {}".format(config.rootdir),
+            f"rootdir: {config.rootdir}",
         ]
         if config.inifile:
-            lines.append("inifile: {}".format(config.rootdir.bestrelpath(config.inifile)))
+            lines.append(f"inifile: {config.rootdir.bestrelpath(config.inifile)}")
 
         plugininfo = config.pluginmanager.list_plugin_distinfo()
         if plugininfo:
-            lines.append("plugins: {}".format(", ".join(_plugin_nameversions(plugininfo))))
+            lines.append(
+                "plugins: {}".format(", ".join(_plugin_nameversions(plugininfo)))
+            )
 
         return lines
 
@@ -199,70 +198,71 @@ class TLDRReporter:
         if self.verbosity:
             if self.xdist:
                 if self.verbosity >= 2:
-                    self.print("{} ... ".format(nodeid))
+                    self.print(f"{nodeid} ... ")
             else:
-                self.print("{} ... ".format(nodeid), end='', flush=True)
+                self.print(f"{nodeid} ... ", end="", flush=True)
 
     def report_pass(self, report):
-        self.stats.setdefault('.', []).append(report)
+        self.stats.setdefault(".", []).append(report)
         if self.verbosity:
             self.print("ok")
         else:
-            self.print('.', end='', flush=True)
+            self.print(".", end="", flush=True)
 
     def report_fail(self, report):
-        self.stats.setdefault('F', []).append(report)
+        self.stats.setdefault("F", []).append(report)
         if self.verbosity:
             self.print("FAIL")
         else:
-            self.print('F', end='', flush=True)
+            self.print("F", end="", flush=True)
 
     def report_error(self, report):
-        self.stats.setdefault('E', []).append(report)
+        self.stats.setdefault("E", []).append(report)
         if self.verbosity:
             self.print("ERROR")
         else:
-            self.print('E', end='', flush=True)
+            self.print("E", end="", flush=True)
 
     def report_skip(self, report):
-        self.stats.setdefault('s', []).append(report)
+        self.stats.setdefault("s", []).append(report)
         if self.verbosity:
             self.print(report.longrepr[2])
         else:
-            self.print('s', end='', flush=True)
+            self.print("s", end="", flush=True)
 
     def report_expected_failure(self, report):
-        self.stats.setdefault('x', []).append(report)
+        self.stats.setdefault("x", []).append(report)
         if self.verbosity:
-            self.print('expected failure')
+            self.print("expected failure")
         else:
-            self.print('x', end='', flush=True)
+            self.print("x", end="", flush=True)
 
     def report_unexpected_success(self, report):
-        self.stats.setdefault('u', []).append(report)
+        self.stats.setdefault("u", []).append(report)
         if self.verbosity:
             self.print("unexpected success")
         else:
-            self.print('u', end='', flush=True)
+            self.print("u", end="", flush=True)
 
     def pytest_runtest_logreport(self, report):
-        if report.when == 'call':
+        if report.when == "call":
             if self.verbosity and self.xdist:
-                self.print("{}: ".format(report.nodeid), end='')
+                self.print(f"{report.nodeid}: ", end="")
 
             self._n_tests += 1
             if report.failed:
-                if report.longreprtext == 'Unexpected success':
+                if report.longreprtext == "Unexpected success":
                     # pytest raw xfail
                     # unittest @unexpectedSuccess, Python 3
                     self.report_unexpected_success(report)
                 else:
-                    if '\nAssertionError: ' in str(report.longreprtext) \
-                            or '\nFailed: ' in str(report.longreprtext):
+                    if "\nAssertionError: " in str(
+                        report.longreprtext
+                    ) or "\nFailed: " in str(report.longreprtext):
                         # pytest assertion
                         # unittest self.assert()
                         self.report_fail(report)
-                    elif str(report.longreprtext).startswith('[XPASS('):
+                    elif str(report.longreprtext).startswith("[XPASS("):
                         # pytest xfail(strict=True)
                         self.report_unexpected_success(report)
                     else:
@@ -273,7 +273,7 @@ class TLDRReporter:
                 else:
                     self.report_expected_failure(report)
             else:
-                if report.longreprtext == 'Unexpected success':
+                if report.longreprtext == "Unexpected success":
                     # unittest @unexpectedSuccess, Py2.7
                     self.report_unexpected_success(report)
                 else:
@@ -291,20 +291,20 @@ class TLDRReporter:
         self.print()
         duration = time.time() - self._starttime
 
-        errors = self.stats.get('E', [])
+        errors = self.stats.get("E", [])
         for report in errors:
             self.print("=" * 78)
-            self.print("ERROR: {}".format(report.nodeid))
+            self.print(f"ERROR: {report.nodeid}")
             self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
             self.print(report.longreprtext)
             self.print()
 
-        failures = self.stats.get('F', [])
+        failures = self.stats.get("F", [])
         for report in failures:
             self.print("=" * 78)
-            self.print("FAIL: {}".format(report.nodeid))
+            self.print(f"FAIL: {report.nodeid}")
             self.print("-" * 78)
             if report.capstdout:
                 self.print(report.capstdout)
@@ -312,28 +312,30 @@ class TLDRReporter:
             self.print()
 
         if self.verbosity >= 3:
-            for report in self.stats.get('.', []):
+            for report in self.stats.get(".", []):
                 if report.capstdout:
                     self.print("=" * 78)
-                    self.print("Pass: {}".format(report.nodeid))
+                    self.print(f"Pass: {report.nodeid}")
                     self.print("-" * 78)
                     self.print(report.capstdout)
                     self.print()
 
-        upasses = self.stats.get('u', [])
+        upasses = self.stats.get("u", [])
         for report in upasses:
             self.print("=" * 78)
-            self.print("UNEXPECTED SUCCESS: {}".format(report.nodeid))
+            self.print(f"UNEXPECTED SUCCESS: {report.nodeid}")
             if report.capstdout:
                 self.print(report.capstdout)
             self.print(report.longreprtext)
             self.print()
 
         self.print("-" * 78)
-        self.print("Ran {n_tests} tests in {duration:.2f}s".format(
+        self.print(
+            "Ran {n_tests} tests in {duration:.2f}s".format(
                 n_tests=self._n_tests,
                 duration=duration,
-            ))
+            )
+        )
 
         if exitstatus in {ExitCode.OK, ExitCode.TESTS_FAILED}:
             self.config.hook.pytest_terminal_summary(
@@ -342,20 +344,20 @@ class TLDRReporter:
                 exitstatus=exitstatus,
             )
 
-        xfails = self.stats.get('x', [])
-        skips = self.stats.get('s', [])
+        xfails = self.stats.get("x", [])
+        skips = self.stats.get("s", [])
 
         problems = []
         if errors:
-            problems.append('errors={}'.format(len(errors)))
+            problems.append(f"errors={len(errors)}")
         if failures:
-            problems.append('failures={}'.format(len(failures)))
+            problems.append(f"failures={len(failures)}")
         if skips:
-            problems.append('skipped={}'.format(len(skips)))
+            problems.append(f"skipped={len(skips)}")
         if xfails:
-            problems.append('expected failures={}'.format(len(xfails)))
+            problems.append(f"expected failures={len(xfails)}")
         if upasses:
-            problems.append('unexpected successes={}'.format(len(upasses)))
+            problems.append(f"unexpected successes={len(upasses)}")
 
         if self._n_tests:
             self.print()
