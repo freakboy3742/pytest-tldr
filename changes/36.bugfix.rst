@@ -1,0 +1,1 @@
+An incompatibility with Pytest 7.2 was corrected.
