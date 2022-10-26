@@ -5,6 +5,15 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.isort]
+profile = "black"
+skip_glob = [
+    "docs/conf.py",
+    "venv*",
+    "local",
+]
+multi_line_output = 3
+
 [tool.towncrier]
 directory = "changes"
 package = "pytest_tldr"

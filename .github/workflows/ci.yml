@@ -5,36 +5,76 @@ on:
     branches:
       - main
 
+env:
+  python_version: '3.9'
+
 jobs:
-  beefore:
-    name: Pre-test checks
+  pre-commit:
+    name: Pre-commit code style checks
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        task:
-        - 'flake8'
-        - 'check-manifest'
-        - 'towncrier-check'
-        - 'package'
+    timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v3.1.0
+    - name: Check out code
+      uses: actions/checkout@v3.1.0
+    - name: Set up Python
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: ${{ env.python_version }}
+    - name: Lint with Pre-commit
+      uses: pre-commit/action@v3.0.0
+
+  towncrier:
+    name: Towncrier changenote check
+    runs-on: ubuntu-latest
+    steps:
+    # Fetch main branch for comparison, then check out current branch.
+    - name: Check out mainline code
+      uses: actions/checkout@v3.1.0
+      with:
+        fetch-depth: 0
+        ref: main
+    - name: Check out branch code
+      uses: actions/checkout@v3.1.0
       with:
         fetch-depth: 0
     - name: Set up Python
       uses: actions/setup-python@v4.3.0
       with:
-        python-version: '3.X'
+        python-version: ${{ env.python_version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools
-        python -m pip install tox
-    - name: Run pre-test check
+        pip install tox
+    - name: Run towncrier check
       run: |
-        tox -e ${{ matrix.task }}
+        tox -e towncrier-check
 
-  build:
-    needs: beefore
+  package:
+    name: Package code artefacts
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3.1.0
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: ${{ env.python_version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install tox
+    - name: Build packages
+      run: |
+        tox -e package
+    - name: Upload packages as artefacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: packages
+        path: dist
+        if-no-files-found: error
+
+  tests:
+    needs: [pre-commit, towncrier, package]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -57,17 +97,21 @@ jobs:
           - python-version: "3.11"
             pytest-version: "5"
     steps:
-    - uses: actions/checkout@v1
+    - name: Check out code
+      uses: actions/checkout@v3.1.0
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Get packages
+      uses: actions/download-artifact@v3
+      with:
+        name: packages
+        path: dist
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools
         python -m pip install tox
     - name: Test
       run: |
         export PY_VERSION=${{ matrix.python-version }}
-        tox -e py${PY_VERSION/./}-pytest${{ matrix.pytest-version }}
+        tox -e py${PY_VERSION/./}-pytest${{ matrix.pytest-version }} --installpkg dist/*.whl
