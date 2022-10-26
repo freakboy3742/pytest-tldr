@@ -4,6 +4,19 @@ Release notes
 
 .. towncrier release notes start
 
+0.2.5 (2022-10-26)
+==================
+
+Bugfixes
+--------
+
+* An incompatibility with Pytest 7.2 was corrected. (#36)
+
+Misc
+----
+
+* #37
+
 0.2.4 (2021-03-12)
 ------------------
 

@@ -17,7 +17,7 @@ except ImportError:
         TESTS_FAILED = EXIT_TESTSFAILED
 
 
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 
 
 @pytest.hookimpl(trylast=True)
