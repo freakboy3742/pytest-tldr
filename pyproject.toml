@@ -1,9 +1,58 @@
 [build-system]
 requires = [
-    "setuptools >= 43.0.0",
-    "wheel >= 0.32.0",
+    "setuptools== 73.0.1",
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+name = "pytest-tldr"
+description = "A pytest plugin that limits the output to just the things you need."
+license.file = "LICENSE"
+readme = "README.rst"
+requires-python = ">= 3.9"
+authors = [
+    {name="Russell Keith-Magee", email="russell@keith-magee.com"},
+]
+maintainers = [
+    {name="Russell Keith-Magee", email="russell@keith-magee.com"},
+]
+keywords = [
+    "pytest"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: BSD License",
+]
+dependencies = [
+    "pytest >= 3.5.0"
+]
+
+[project.entry-points."pytest11"]
+tldr = "pytest_tldr"
+
+[project.urls]
+Funding = "https://beeware.org/contributing/membership/"
+# Documentation = "https://pytest-tldr.readthedocs.io/"
+Tracker = "https://github.com/freakboy3742/pytest-tldr/issues"
+Source = "https://github.com/freakboy3742/pytest-tldr"
+
+[tool.setuptools.dynamic]
+version = {attr="pytest_tldr.__version__"}
 
 [tool.isort]
 profile = "black"
@@ -20,3 +69,11 @@ package = "pytest_tldr"
 filename = "CHANGELOG.rst"
 title_format = "{version} ({project_date})"
 template = "changes/template.rst"
+issue_format = "`#{issue} <https://github.com/beeware/briefcase/issues/{issue}>`__"
+type = [
+    { directory = "feature", name = "Features", showcontent = true },
+    { directory = "bugfix", name = "Bugfixes", showcontent = true },
+    { directory = "removal", name = "Backward Incompatible Changes", showcontent = true },
+    { directory = "doc", name = "Documentation", showcontent = true },
+    { directory = "misc", name = "Misc", showcontent = false },
+]

@@ -1,0 +1,1 @@
+Project metadata was updated to use PEP 621 format.
