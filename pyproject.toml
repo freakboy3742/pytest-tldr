@@ -51,6 +51,9 @@ Funding = "https://beeware.org/contributing/membership/"
 Tracker = "https://github.com/freakboy3742/pytest-tldr/issues"
 Source = "https://github.com/freakboy3742/pytest-tldr"
 
+[tool.setuptools]
+py-modules = ["pytest_tldr"]
+
 [tool.setuptools.dynamic]
 version = {attr="pytest_tldr.__version__"}
 
