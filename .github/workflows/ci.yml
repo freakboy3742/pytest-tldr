@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13-dev"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13-dev"]
         pytest-version: ["3", "4", "5", "6", "7", "8"]
 
         exclude:
@@ -125,5 +125,5 @@ jobs:
         python -m pip install tox
     - name: Test
       run: |
-        export PY_VERSION=${{ matrix.python-version }}
+        export PY_VERSION=$(cut -d- -f1 <<< ${{ matrix.python-version }})
         tox -e py${PY_VERSION/./}-pytest${{ matrix.pytest-version }} --installpkg dist/*.whl
