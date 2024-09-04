@@ -1,0 +1,1 @@
+Support for Pytest 8 was added

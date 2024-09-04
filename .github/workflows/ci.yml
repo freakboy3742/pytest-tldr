@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-env:
-  python_version: '3.9'
-
 jobs:
   pre-commit:
     name: Pre-commit code style checks
@@ -17,9 +14,9 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3.1.0
     - name: Set up Python
-      uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v5.1.1
       with:
-        python-version: ${{ env.python_version }}
+        python-version: "3.X"
     - name: Lint with Pre-commit
       uses: pre-commit/action@v3.0.0
 
@@ -38,9 +35,9 @@ jobs:
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v5.1.1
       with:
-        python-version: ${{ env.python_version }}
+        python-version: "3.X"
     - name: Install dependencies
       run: |
         pip install tox
@@ -57,9 +54,9 @@ jobs:
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v5.1.1
       with:
-        python-version: ${{ env.python_version }}
+        python-version: "3.X"
     - name: Install dependencies
       run: |
         python -m pip install tox
@@ -67,7 +64,7 @@ jobs:
       run: |
         tox -e package
     - name: Upload packages as artefacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.3.6
       with:
         name: packages
         path: dist
@@ -78,8 +75,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        pytest-version: ["3", "4", "5", "6", "7"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13-dev"]
+        pytest-version: ["3", "4", "5", "6", "7", "8"]
 
         exclude:
           # PyTest <=5 doesn't work on Python >= 3.10
@@ -96,6 +93,21 @@ jobs:
             pytest-version: "4"
           - python-version: "3.11"
             pytest-version: "5"
+
+          - python-version: "3.12"
+            pytest-version: "3"
+          - python-version: "3.12"
+            pytest-version: "4"
+          - python-version: "3.12"
+            pytest-version: "5"
+
+          - python-version: "3.13-dev"
+            pytest-version: "3"
+          - python-version: "3.13-dev"
+            pytest-version: "4"
+          - python-version: "3.13-dev"
+            pytest-version: "5"
+
     steps:
     - name: Check out code
       uses: actions/checkout@v3.1.0
@@ -104,7 +116,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Get packages
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4.1.7
       with:
         name: packages
         path: dist
@@ -113,5 +125,5 @@ jobs:
         python -m pip install tox
     - name: Test
       run: |
-        export PY_VERSION=${{ matrix.python-version }}
+        export PY_VERSION=$(cut -d- -f1 <<< ${{ matrix.python-version }})
         tox -e py${PY_VERSION/./}-pytest${{ matrix.pytest-version }} --installpkg dist/*.whl
