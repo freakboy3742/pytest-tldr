@@ -40,7 +40,7 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
 ]
 dependencies = [
-    "pytest >= 3.5.0"
+    "pytest >= 7.0.0"
 ]
 
 [project.entry-points."pytest11"]

@@ -1,1 +1,1 @@
-Support for Pytest < 6 was dropped.
+Support for Pytest < 7 was dropped.
