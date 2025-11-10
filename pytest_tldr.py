@@ -6,7 +6,7 @@ import pluggy
 import py
 import pytest
 
-__version__ = "0.2.5"
+__version__ = "0.2.6"
 
 
 @pytest.hookimpl(trylast=True)
