@@ -9,7 +9,8 @@ build-backend = "setuptools.build_meta"
 dynamic = ["version"]
 name = "pytest-tldr"
 description = "A pytest plugin that limits the output to just the things you need."
-license.file = "LICENSE"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 readme = "README.rst"
 requires-python = ">= 3.10"
 authors = [
@@ -38,7 +39,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Operating System :: OS Independent",
-    "License :: OSI Approved :: BSD License",
 ]
 dependencies = [
     "pytest >= 7.0.0"
