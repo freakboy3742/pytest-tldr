@@ -75,38 +75,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13-dev"]
-        pytest-version: ["3", "4", "5", "6", "7", "8"]
-
-        exclude:
-          # PyTest <=5 doesn't work on Python >= 3.10
-          - python-version: "3.10"
-            pytest-version: "3"
-          - python-version: "3.10"
-            pytest-version: "4"
-          - python-version: "3.10"
-            pytest-version: "5"
-
-          - python-version: "3.11"
-            pytest-version: "3"
-          - python-version: "3.11"
-            pytest-version: "4"
-          - python-version: "3.11"
-            pytest-version: "5"
-
-          - python-version: "3.12"
-            pytest-version: "3"
-          - python-version: "3.12"
-            pytest-version: "4"
-          - python-version: "3.12"
-            pytest-version: "5"
-
-          - python-version: "3.13-dev"
-            pytest-version: "3"
-          - python-version: "3.13-dev"
-            pytest-version: "4"
-          - python-version: "3.13-dev"
-            pytest-version: "5"
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
+        pytest-version: ["6", "7", "8", "9"]
 
     steps:
     - name: Check out code
@@ -115,6 +85,8 @@ jobs:
       uses: actions/setup-python@v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
+
     - name: Get packages
       uses: actions/download-artifact@v4.1.7
       with:
