@@ -157,9 +157,14 @@ class TLDRReporter:
                 pass
             self.print(f"pluggy=={pluggy.__version__}")
 
-            headers = self.config.hook.pytest_report_header(
-                config=self.config, startdir=py.path.local()
-            )
+            if pytest.version_tuple[0] >= 7:
+                headers = self.config.hook.pytest_report_header(
+                    config=self.config, start_path=py.path.local()
+                )
+            else:
+                headers = self.config.hook.pytest_report_header(
+                    config=self.config, startdir=py.path.local()
+                )
             for header in headers:
                 if isinstance(header, str):
                     self.print(header)
