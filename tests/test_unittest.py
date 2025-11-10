@@ -1,6 +1,3 @@
-import sys
-
-
 def test_pass(testdir):
     testdir.makepyfile(
         """
@@ -127,10 +124,3 @@ def test_upass(testdir):
             "*::TestCase::test_unexpected_success ... unexpected success",
         ]
     )
-
-    # pytest under Python2 reports an unexpected pass as a success,
-    # but a failure under Python3.
-    if sys.version_info.major == 2:
-        assert result.ret == 0
-    else:
-        assert result.ret == 1

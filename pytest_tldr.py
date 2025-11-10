@@ -6,17 +6,6 @@ import pluggy
 import py
 import pytest
 
-try:
-    from pytest import ExitCode
-except ImportError:
-    # PyTest <5 compatibibility
-    from _pytest.main import EXIT_OK, EXIT_TESTSFAILED
-
-    class ExitCode:
-        OK = EXIT_OK
-        TESTS_FAILED = EXIT_TESTSFAILED
-
-
 __version__ = "0.2.5"
 
 
@@ -35,12 +24,11 @@ def pytest_configure(config):
 
 def _plugin_nameversions(plugininfo):
     values = []
-    for plugin, dist in plugininfo:
+    for _, dist in plugininfo:
         # gets us name and version!
-        name = "{dist.project_name}-{dist.version}".format(dist=dist)
+        name = f"{dist.project_name}-{dist.version}"
         # questionable convenience, but it keeps things short
-        if name.startswith("pytest-"):
-            name = name[7:]
+        name = name.removeprefix("pytest-")
         # we decided to print python package names
         # they can have more than one plugin
         if name not in values:
@@ -71,7 +59,7 @@ class TLDRReporter:
     # Plugin compatibility methods.
     #
     # TLDR overwrites TerminalReporter, but some plugins depend
-    # on the outout capabilities of TerminalReporter. Preserve them,
+    # on the output capabilities of TerminalReporter. Preserve them,
     # to the extent possible.
     ######################################################################
 
@@ -330,14 +318,9 @@ class TLDRReporter:
             self.print()
 
         self.print("-" * 78)
-        self.print(
-            "Ran {n_tests} tests in {duration:.2f}s".format(
-                n_tests=self._n_tests,
-                duration=duration,
-            )
-        )
+        self.print(f"Ran {self._n_tests} tests in {duration:.2f}s")
 
-        if exitstatus in {ExitCode.OK, ExitCode.TESTS_FAILED}:
+        if exitstatus in {pytest.ExitCode.OK, pytest.ExitCode.TESTS_FAILED}:
             self.config.hook.pytest_terminal_summary(
                 config=self.config,
                 terminalreporter=self,
