@@ -11,7 +11,7 @@ name = "pytest-tldr"
 description = "A pytest plugin that limits the output to just the things you need."
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">= 3.10"
 authors = [
     {name="Russell Keith-Magee", email="russell@keith-magee.com"},
@@ -57,7 +57,7 @@ Source = "https://github.com/freakboy3742/pytest-tldr"
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 pre-commit = [
-    "pre-commit == 4.3.0",
+    "pre-commit == 4.4.0",
 ]
 
 setuptools-scm = [
@@ -117,9 +117,9 @@ version = {attr="pytest_tldr.__version__"}
 [tool.towncrier]
 directory = "changes"
 package = "pytest_tldr"
-filename = "CHANGELOG.rst"
+filename = "CHANGELOG.md"
 title_format = "{version} ({project_date})"
-template = "changes/template.rst"
+template = "changes/template.md"
 issue_format = "`#{issue} <https://github.com/beeware/briefcase/issues/{issue}>`__"
 type = [
     { directory = "feature", name = "Features", showcontent = true },

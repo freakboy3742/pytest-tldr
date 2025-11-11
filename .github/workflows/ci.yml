@@ -12,9 +12,9 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Check out code
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5
     - name: Set up Python
-      uses: actions/setup-python@v6.0.0
+      uses: actions/setup-python@v6
       with:
         python-version: "3.X"
     - name: Lint with Pre-commit
@@ -26,16 +26,16 @@ jobs:
     steps:
     # Fetch main branch for comparison, then check out current branch.
     - name: Check out mainline code
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         ref: main
     - name: Check out branch code
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v6.0.0
+      uses: actions/setup-python@v6
       with:
         python-version: "3.X"
     - name: Install dependencies
@@ -50,11 +50,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Set up Python
-      uses: actions/setup-python@v6.0.0
+      uses: actions/setup-python@v6
       with:
         python-version: "3.X"
     - name: Install dependencies
@@ -64,7 +64,7 @@ jobs:
       run: |
         tox -e package
     - name: Upload packages as artefacts
-      uses: actions/upload-artifact@v4.3.6
+      uses: actions/upload-artifact@v5.0.0
       with:
         name: packages
         path: dist
@@ -81,15 +81,15 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v5
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6.0.0
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
 
     - name: Get packages
-      uses: actions/download-artifact@v4.1.7
+      uses: actions/download-artifact@v6.0.0
       with:
         name: packages
         path: dist
