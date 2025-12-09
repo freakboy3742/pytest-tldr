@@ -22,7 +22,6 @@ jobs:
 
   towncrier:
     name: Towncrier changenote check
-    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
     # Fetch main branch for comparison, then check out current branch.
@@ -43,6 +42,7 @@ jobs:
       run: |
         pip install tox
     - name: Run towncrier check
+      if: github.actor != 'dependabot[bot]'
       run: |
         tox -e towncrier-check
 
