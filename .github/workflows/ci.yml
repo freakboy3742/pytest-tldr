@@ -65,7 +65,7 @@ jobs:
       run: |
         tox -e package
     - name: Upload packages as artefacts
-      uses: actions/upload-artifact@v5.0.0
+      uses: actions/upload-artifact@v6.0.0
       with:
         name: packages
         path: dist
@@ -90,7 +90,7 @@ jobs:
         allow-prereleases: true
 
     - name: Get packages
-      uses: actions/download-artifact@v6.0.0
+      uses: actions/download-artifact@v7.0.0
       with:
         name: packages
         path: dist
