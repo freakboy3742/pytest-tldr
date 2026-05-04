@@ -57,11 +57,11 @@ Source = "https://github.com/freakboy3742/pytest-tldr"
 # Extras used by developers *of* briefcase are pinned to specific versions to
 # ensure environment consistency.
 pre-commit = [
-    "pre-commit == 4.5.1",
+    "pre-commit == 4.6.0",
 ]
 
 setuptools-scm = [
-    "setuptools_scm == 9.2.2",
+    "setuptools_scm == 10.0.5",
 ]
 
 towncrier = [
@@ -69,11 +69,11 @@ towncrier = [
 ]
 
 tox-uv = [
-    "tox-uv == 1.34.0",
+    "tox-uv == 1.35.1",
 ]
 
 dev = [
-    "pytest == 9.0.2",
+    "pytest == 9.0.3",
     {include-group = "pre-commit"},
     {include-group = "setuptools-scm"},
     {include-group = "tox-uv"},
