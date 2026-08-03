@@ -146,7 +146,7 @@ class TLDRReporter:
             self.print(f"pluggy=={pluggy.__version__}")
 
             headers = self.config.hook.pytest_report_header(
-                config=self.config, start_path=py.path.local()
+                config=self.config, start_path=self.config.invocation_params.dir
             )
             for header in headers:
                 if isinstance(header, str):
